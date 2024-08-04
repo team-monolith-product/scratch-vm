@@ -1,13 +1,13 @@
 {
-  "name": "scratch-vm",
-  "version": "2.1.28",
-  "description": "Virtual Machine for Scratch 3.0",
+  "name": "@team-monolith/scratch-vm",
+  "version": "0.1.0",
+  "description": "Modified Scratch VM for Team Monolith. It is based on 2.1.28",
   "author": "Massachusetts Institute of Technology",
   "license": "BSD-3-Clause",
-  "homepage": "https://github.com/scratchfoundation/scratch-vm#readme",
+  "homepage": "https://github.com/team-monolith-product/scratch-vm#readme",
   "repository": {
     "type": "git",
-    "url": "https://github.com/scratchfoundation/scratch-vm.git",
+    "url": "https://github.com/team-monolith-product/scratch-vm.git",
     "sha": "58886660c22791545e4b5a331a2db0184cbcb3aa"
   },
   "main": "./dist/node/scratch-vm.js",

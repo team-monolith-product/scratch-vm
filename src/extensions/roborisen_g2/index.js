@@ -12,6 +12,8 @@ const bleNusServiceUUID = '6e400001-b5a3-f393-e0a9-e50e24dcca9e';
 const bleNusCharRXUUID = '6e400002-b5a3-f393-e0a9-e50e24dcca9e';
 const bleNusCharTXUUID = '6e400003-b5a3-f393-e0a9-e50e24dcca9e';
 
+const wormBotScheduledData = 'ff,ff,ff,aa,20,0,cd,2,43,2,3,0,0,ff,ff,ff,0,0,0,ca,1,1b,2,3,0,1,c5,17,fc,a5,0,f8,3,5b,0,f8,fc,7c,0,f8,0,0,2,58,3,5b,0,f8,fc,7c,0,f8,0,0,2,58,3,5b,0,f8,0,0,2,58,0,0,3,20,fc,a5,0,f8,0,0,2,58,3,84,0,f8,fc,a5,0,f8,0,0,2,58,3,84,0,f8,fc,a5,0,f8,0,0,2,58,3,5b,0,f8,0,0,3,20,fc,41,1,ef,3,97,1,ef,3,97,1,ef,1,1a,0,6e,fc,48,2,5d,0,0,2,26,2,ff,0,a5,fd,5c,0,a5,0,0,3,20,fc,f2,0,dc,2,b3,0,dc,1,1a,0,6e,3,3c,1,4a,fc,80,1,b8,fc,23,1,ef,3,dd,1,ef,0,0,2,bc,0,0,3,20,fc,41,1,ef,3,97,1,ef,0,0,3,20,fc,23,1,ef,3,dd,1,ef,0,0,2,bc,0,0,3,20,2,b9,0,f8,fc,8d,0,8a,3,73,0,8a,fc,8d,0,8a,3,73,0,8a,fc,7d,1,f0,3,73,0,8a,fc,8d,0,8a,3,73,0,8a,fc,8d,0,8a,fc,7e,0,f7,3,82,1,ef,fc,7d,0,f8,3,ab,1,f0,fc,55,1,f0,3,ab,1,f0,fc,55,0,f8,fc,23,1,ef,3,dd,1,ef,0,0,2,bc,0,0,3,20,0,0,3,e8,ff,ff,ff,1,0,0,ca,1,1b,2,3,0,1,48,bf,fc,a5,0,f8,0,0,2,58,3,84,0,f8,fc,a5,0,f8,0,0,2,58,3,84,0,f8,fc,a5,0,f8,0,0,2,58,3,5b,0,f8,0,0,3,20,fc,a5,0,f8,3,5b,0,f8,fc,7c,0,f8,0,0,2,58,3,5b,0,f8,fc,7c,0,f8,0,0,2,58,3,5b,0,f8,0,0,2,58,0,0,3,20,fc,f2,0,dc,2,b3,0,dc,1,1a,0,6e,3,3c,1,4a,fc,80,1,b8,fc,23,1,ef,3,dd,1,ef,0,0,2,bc,0,0,3,20,fc,41,1,ef,3,97,1,ef,3,97,1,ef,1,1a,0,6e,fc,48,2,5d,0,0,2,26,2,ff,0,a5,fd,5c,0,a5,0,0,3,20,fc,f2,0,dc,2,b3,0,dc,0,0,3,20,0,0,2,26,2,ff,0,a5,fd,5c,0,a5,0,0,3,20,2,b9,0,f8,fc,8d,0,8a,3,73,0,8a,fc,8d,0,8a,3,73,0,8a,fc,7d,1,f0,3,73,0,8a,fc,8d,0,8a,3,73,0,8a,fc,8d,0,8a,fd,20,0,89,3,49,1,81,3,83,0,f8,fc,55,1,f0,3,ab,1,f0,fc,55,1,f0,3,ab,0,f8,0,0,2,26,2,ff,0,a5,fd,5c,0,a5,0,0,3,20,0,0,3,e8';
+
 class Gcube2 {
     constructor (runtime, extensionId) {
         this._runtime = runtime;
@@ -35,6 +37,47 @@ class RoborisenGCube2Blocks {
         this.queue = [];
 
         this.inActionGube2 = false;
+    }
+
+    get CUBE12 (){
+        return [
+            {
+                text: formatMessage({
+                    id: 'roborisen.cube.1',
+                    default: '1',
+                    description: '1'
+                }),
+                value: '1'
+            },
+            {
+                text: formatMessage({
+                    id: 'roborisen.cube.2',
+                    default: '2',
+                    description: '2'
+                }),
+                value: '2'
+            }
+        ];
+    }
+    get MODEL (){
+        return [
+            {
+                text: formatMessage({
+                    id: 'roborisen.model.minicar',
+                    default: '미니카',
+                    description: '미니카'
+                }),
+                value: 'minicar'
+            },
+            {
+                text: formatMessage({
+                    id: 'roborisen.model.autocar',
+                    default: '오토카',
+                    description: '오토카'
+                }),
+                value: 'autocar'
+            }
+        ];
     }
 
     async enqueue (data) {
@@ -91,8 +134,9 @@ class RoborisenGCube2Blocks {
                     blockType: BlockType.COMMAND,
                     arguments: {
                         CUBE: {
-                            type: ArgumentType.NUMBER,
-                            defaultValue: 0
+                            type: ArgumentType.STRING,
+                            menu: 'cube',
+                            defaultValue: this.CUBE12[0].value
                         },
                         RED: {
                             type: ArgumentType.NUMBER,
@@ -118,8 +162,9 @@ class RoborisenGCube2Blocks {
                     blockType: BlockType.COMMAND,
                     arguments: {
                         CUBE: {
-                            type: ArgumentType.NUMBER,
-                            defaultValue: 0
+                            type: ArgumentType.STRING,
+                            menu: 'cube',
+                            defaultValue: this.CUBE12[0].value
                         },
                         SPEED: {
                             type: ArgumentType.NUMBER,
@@ -137,8 +182,9 @@ class RoborisenGCube2Blocks {
                     blockType: BlockType.COMMAND,
                     arguments: {
                         CUBE: {
-                            type: ArgumentType.NUMBER,
-                            defaultValue: 0
+                            type: ArgumentType.STRING,
+                            menu: 'cube',
+                            defaultValue: this.CUBE12[0].value
                         },
                         SPEED: {
                             type: ArgumentType.NUMBER,
@@ -161,8 +207,9 @@ class RoborisenGCube2Blocks {
                     blockType: BlockType.COMMAND,
                     arguments: {
                         CUBE: {
-                            type: ArgumentType.NUMBER,
-                            defaultValue: 0
+                            type: ArgumentType.STRING,
+                            menu: 'cube',
+                            defaultValue: this.CUBE12[0].value
                         },
                         X: {
                             type: ArgumentType.NUMBER,
@@ -188,8 +235,9 @@ class RoborisenGCube2Blocks {
                     blockType: BlockType.COMMAND,
                     arguments: {
                         CUBE: {
-                            type: ArgumentType.NUMBER,
-                            defaultValue: 0
+                            type: ArgumentType.STRING,
+                            menu: 'cube',
+                            defaultValue: this.CUBE12[0].value
                         },
                         MATRIX8: {
                             type: ArgumentType.MATRIX8,
@@ -208,8 +256,9 @@ class RoborisenGCube2Blocks {
                     blockType: BlockType.COMMAND,
                     arguments: {
                         MODE: {
-                            type: ArgumentType.NUMBER,
-                            defaultValue: 0
+                            type: ArgumentType.STRING,
+                            menu: 'mode',
+                            defaultValue: this.MODEL[0].value
                         },
                         SPEED: {
                             type: ArgumentType.NUMBER,
@@ -227,8 +276,9 @@ class RoborisenGCube2Blocks {
                     blockType: BlockType.COMMAND,
                     arguments: {
                         MODE: {
-                            type: ArgumentType.NUMBER,
-                            defaultValue: 0
+                            type: ArgumentType.STRING,
+                            menu: 'mode',
+                            defaultValue: this.MODEL[0].value
                         },
                         SPEED: {
                             type: ArgumentType.NUMBER,
@@ -250,16 +300,85 @@ class RoborisenGCube2Blocks {
                     blockType: BlockType.COMMAND,
                     arguments: {
                         MODE: {
-                            type: ArgumentType.NUMBER,
-                            defaultValue: 0
+                            type: ArgumentType.STRING,
+                            menu: 'mode',
+                            defaultValue: this.MODEL[0].value
                         },
                         DEGREE: {
                             type: ArgumentType.NUMBER,
                             defaultValue: 0
                         }
                     }
-                }
-            ]
+                },
+                '---',
+                {
+                    opcode: 'wormbotSetting',
+                    text: formatMessage({
+                        id: 'gcube2.wormbotSetting',
+                        default: '웜봇 동작 설정하기',
+                        description: 'wormbotSetting'
+                    }),
+                    blockType: BlockType.COMMAND
+                },
+                {
+                    opcode: 'wormbotLeftMove',
+                    text: formatMessage({
+                        id: 'gcube2.wormbotLeftMove',
+                        default: '웜봇 왼쪽으로 이동하기',
+                        description: 'wormbotLeftMove'
+                    }),
+                    blockType: BlockType.COMMAND
+                },
+                {
+                    opcode: 'wormbotRightMove',
+                    text: formatMessage({
+                        id: 'gcube2.wormbotRightMove',
+                        default: '웜봇 오른쪽으로 이동하기',
+                        description: 'wormbotRightMove'
+                    }),
+                    blockType: BlockType.COMMAND
+                },
+                {
+                    opcode: 'wormbotLeftTurn',
+                    text: formatMessage({
+                        id: 'gcube2.wormbotLeftTurn',
+                        default: '웜봇 왼쪽으로 회전하기',
+                        description: 'wormbotLeftTurn'
+                    }),
+                    blockType: BlockType.COMMAND
+                },
+                {
+                    opcode: 'wormbotRightTurn',
+                    text: formatMessage({
+                        id: 'gcube2.wormbotRightTurn',
+                        default: '웜봇 오른쪽으로 회전하기',
+                        description: 'wormbotRightTurn'
+                    }),
+                    blockType: BlockType.COMMAND
+                },
+                {
+                    opcode: 'wormbotStand',
+                    text: formatMessage({
+                        id: 'gcube2.wormbotStand',
+                        default: '웜봇 물구나무 서기',
+                        description: 'wormbotStand'
+                    }),
+                    blockType: BlockType.COMMAND
+                },
+                {
+                    opcode: 'wormbotDance',
+                    text: formatMessage({
+                        id: 'gcube2.wormbotDance',
+                        default: '웜봇 춤추기',
+                        description: 'wormbotDance'
+                    }),
+                    blockType: BlockType.COMMAND
+                },
+            ],
+            menus: {
+                cube: this.CUBE12,
+                mode: this.MODEL
+            }
         };
     }
 
@@ -300,7 +419,15 @@ class RoborisenGCube2Blocks {
         if (this.inActionGube2 === true) return;
         this.inActionGube2 = true;
 
-        const ColorLEDData = GCubeProtocol.makeColorLEDData(args.CUBE, args.RED, args.GREEN, args.BLUE);
+        let cube = 0;
+
+        if (args.CUBE === '1') {
+            cube = 0;
+        } else if (args.CUBE === '2') {
+            cube = 1;
+        }
+
+        const ColorLEDData = GCubeProtocol.makeColorLEDData(cube, args.RED, args.GREEN, args.BLUE);
 
         this.enqueue(ColorLEDData);
 
@@ -318,7 +445,15 @@ class RoborisenGCube2Blocks {
         if (this.inActionGube2 === true) return;
         this.inActionGube2 = true;
 
-        const makeContinuousData = GCubeProtocol.makeContinuousData(args.CUBE, 2, GCubeProtocol.changeSpeedToSps(args.SPEED));
+        let cube = 0;
+
+        if (args.CUBE === '1') {
+            cube = 0;
+        } else if (args.CUBE === '2') {
+            cube = 1;
+        }
+
+        const makeContinuousData = GCubeProtocol.makeContinuousData(cube, 2, GCubeProtocol.changeSpeedToSps(args.SPEED));
 
         this.enqueue(makeContinuousData);
 
@@ -335,8 +470,16 @@ class RoborisenGCube2Blocks {
         if (this.inActionGube2 === true) return;
         this.inActionGube2 = true;
 
+        let cube = 0;
+
+        if (args.CUBE === '1') {
+            cube = 0;
+        } else if (args.CUBE === '2') {
+            cube = 1;
+        }
+
         const makeSingleStepData = GCubeProtocol.makeSingleStep(
-            args.CUBE,
+            cube,
             2,
             GCubeProtocol.changeSpeedToSps(args.SPEED),
             GCubeProtocol.changeDegreeToStep(args.STEP)
@@ -356,7 +499,16 @@ class RoborisenGCube2Blocks {
     async setMatrixXY (args) {
         if (this.inActionGube2 === true) return;
         this.inActionGube2 = true;
-        const makeMatrixXYData = GCubeProtocol.makeMatrixXY(args.CUBE, 2, args.X, 7 - args.Y, args.ONOFF);
+
+        let cube = 0;
+
+        if (args.CUBE === '1') {
+            cube = 0;
+        } else if (args.CUBE === '2') {
+            cube = 1;
+        }
+
+        const makeMatrixXYData = GCubeProtocol.makeMatrixXY(cube, 2, args.X, 7 - args.Y, args.ONOFF);
         await this.enqueue(makeMatrixXYData);
 
         console.log(`Receive ${String(GCubeProtocol.byteToString(makeMatrixXYData))}`);
@@ -373,6 +525,14 @@ class RoborisenGCube2Blocks {
         if (this.inActionGube2 === true) return;
         this.inActionGube2 = true;
 
+        let cube = 0;
+
+        if (args.CUBE === '1') {
+            cube = 0;
+        } else if (args.CUBE === '2') {
+            cube = 1;
+        }
+
         const argData = cast.toString(args.MATRIX8).replace(/\s/g, '');
 
         if (argData !== null) {
@@ -386,7 +546,7 @@ class RoborisenGCube2Blocks {
                 }
             }
 
-            const makeMatrix8Data = GCubeProtocol.makeMatrixPictureData(args.CUBE, 2, pictureData);
+            const makeMatrix8Data = GCubeProtocol.makeMatrixPictureData(cube, 2, pictureData);
             await this.enqueue(makeMatrix8Data);
             console.log(`Receive ${String(GCubeProtocol.byteToString(makeMatrix8Data))}`);
         }
@@ -431,7 +591,7 @@ class RoborisenGCube2Blocks {
         const carData = new Array(2).fill(0);
         let delay = 0;
 
-        if (args.MODE === '0') {
+        if (args.MODE === 'minicar') {
             delay = GCubeProtocol.makeDelayTimeFromSpeedStep(
                 GCubeProtocol.changeSpeedToSps(args.SPEED),
                 Math.round(Math.abs(args.CM) * 99)
@@ -464,7 +624,7 @@ class RoborisenGCube2Blocks {
                     Math.round(Math.abs(args.CM) * 99),
                 );
             }
-        } else if (args.MODE === '1') {
+        } else if (args.MODE === 'autocar') {
             delay = GCubeProtocol.makeDelayTimeFromSpeedStep(
                 GCubeProtocol.changeSpeedToSps(args.SPEED),
                 Math.round(Math.abs(args.CM) * 24.44444)
@@ -518,7 +678,7 @@ class RoborisenGCube2Blocks {
         const carData = new Array(2).fill(0);
         let delay = 0;
 
-        if (args.MODE === '0') {
+        if (args.MODE === 'minicar') {
             const degreeSpeed = GCubeProtocol.changeSpeedToSps(90);
             const degreeStep = Math.round(Math.abs(args.DEGREE) * 6.54);
     
@@ -552,7 +712,7 @@ class RoborisenGCube2Blocks {
                 );
             }
         }
-        if (args.MODE === '1') {
+        if (args.MODE === 'autocar') {
             const degreeSpeed = GCubeProtocol.changeSpeedToSps(900);
             const degreeStep = Math.round(Math.abs(args.DEGREE) * 2.25);
     
@@ -595,6 +755,117 @@ class RoborisenGCube2Blocks {
                 clearInterval(repeat);
                 resolve();
             }, delay);
+        });
+    }
+
+    wormbotSetting () {
+        if (this.inActionGube2 === true) return;
+        this.inActionGube2 = true;
+
+        const strSplit = wormBotScheduledData.split(',');
+        const txCharVal = new Uint8Array(strSplit.length);
+        for (let i = 0; i < strSplit.length; i++) {
+            txCharVal[i] = parseInt(strSplit[i], 16);
+        }
+
+        this.enqueue(txCharVal);
+
+        return new Promise(resolve => {
+            const repeat = setInterval(() => {
+                this.inActionGube2 = false;
+                clearInterval(repeat);
+                resolve();
+            }, 12000);
+        });
+    }
+
+    wormbotLeftMove () {
+        if (this.inActionGube2 === true) return;
+        this.inActionGube2 = true;
+
+        this.enqueue(GCubeProtocol.makePointDatas(0x0, 0x9));
+
+        return new Promise(resolve => {
+            const repeat = setInterval(() => {
+                this.inActionGube2 = false;
+                clearInterval(repeat);
+                resolve();
+            }, 7000);
+        });
+    }
+
+    wormbotRightMove () {
+        if (this.inActionGube2 === true) return;
+        this.inActionGube2 = true;
+
+        this.enqueue(GCubeProtocol.makePointDatas(0xa, 0x13));
+
+        return new Promise(resolve => {
+            const repeat = setInterval(() => {
+                this.inActionGube2 = false;
+                clearInterval(repeat);
+                resolve();
+            }, 7000);
+        });
+    }
+
+    wormbotLeftTurn () {
+        if (this.inActionGube2 === true) return;
+        this.inActionGube2 = true;
+
+        this.enqueue(GCubeProtocol.makePointDatas(0x14, 0x1c));
+
+        return new Promise(resolve => {
+            const repeat = setInterval(() => {
+                this.inActionGube2 = false;
+                clearInterval(repeat);
+                resolve();
+            }, 7000);
+        });
+    }
+
+    wormbotRightTurn () {
+        if (this.inActionGube2 === true) return;
+        this.inActionGube2 = true;
+
+        this.enqueue(GCubeProtocol.makePointDatas(0x1d, 0x25));
+
+        return new Promise(resolve => {
+            const repeat = setInterval(() => {
+                this.inActionGube2 = false;
+                clearInterval(repeat);
+                resolve();
+            }, 7000);
+        });
+    }
+
+    wormbotStand () {
+        if (this.inActionGube2 === true) return;
+        this.inActionGube2 = true;
+
+        this.enqueue(GCubeProtocol.makePointDatas(0x26, 0x2c));
+
+        return new Promise(resolve => {
+            const repeat = setInterval(() => {
+                this.inActionGube2 = false;
+                clearInterval(repeat);
+                resolve();
+            }, 7000);
+        });
+    }
+
+    wormbotDance () {
+        if (this.inActionGube2 === true) return;
+        this.inActionGube2 = true;
+
+        this.enqueue(GCubeProtocol.makePointDatas(0x2d, 0x41));
+
+        return new Promise(resolve => {
+            const repeat = setInterval(() => {
+                this.inActionGube2 = false;
+                clearInterval(repeat);
+                resolve();
+            }, 12000);
         });
     }
 

@@ -181,6 +181,37 @@ class GCubeProtocol{
         return data;
     }
 
+    static makePointDatas (start, end) {
+        const data = new Uint8Array(20);
+
+        data[0] = 0xff;
+        data[1] = 0xff;
+        data[2] = 0xff;
+        data[3] = 0xff;
+
+        data[4] = 0x0;
+        data[5] = 0x0;
+
+        data[6] = 0xcb;
+        data[7] = 0x00;
+        data[8] = 0x14;
+        data[9] = 0x02;
+        data[10] = 0x04;
+        data[11] = 0x00;
+        data[12] = 0x02;
+
+        data[13] = 0x0;
+        data[14] = 0x0;
+
+        data[15] = 0x0;
+        data[16] = start;
+        data[17] = 0x0;
+        data[18] = end;
+        data[19] = 0x1;
+
+        return data;
+    }
+
     static getSensorsData (Position, Interval) {
 
         const data = new Uint8Array(11);

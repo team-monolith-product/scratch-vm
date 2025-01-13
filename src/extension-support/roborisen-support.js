@@ -148,17 +148,17 @@ class GCubeProtocol{
     static makeAggregateStep (cubeNum, innerData, method) {
         const packetSize = 13 + (innerData[0].length * innerData.length);
         const data = new Uint8Array(packetSize);
-    
+
         data[0] = 0xff;
         data[1] = 0xff;
         data[2] = 0xff;
         data[3] = 0xaa;
-    
+
         data[4] = cubeNum << 4;
         data[5] = 0x00;
 
         data[6] = 0xcd;
-    
+
         const packetSizeBytes = GCubeProtocol.intToByte(packetSize);
         data[7] = packetSizeBytes[0];
         data[8] = packetSizeBytes[1];
@@ -171,13 +171,13 @@ class GCubeProtocol{
         data[10] = method;
         data[11] = 0x00;
         data[12] = 0x00;
-    
+
         for (let i = 0; i < innerData.length; i++) {
             for (let j = 0; j < innerData[i].length; j++) {
                 data[13 + (innerData[i].length * i) + j] = innerData[i][j];
             }
         }
-    
+
         return data;
     }
 
@@ -215,7 +215,7 @@ class GCubeProtocol{
     static getSensorsData (Position, Interval) {
 
         const data = new Uint8Array(11);
-    
+
         data[0] = 0xff;
         data[1] = 0xff;
         data[2] = 0x00;
@@ -227,7 +227,7 @@ class GCubeProtocol{
         data[8] = 0x0b;
         data[9] = Interval;
         data[10] = 0x1;
-    
+
         return data;
     }
 
@@ -253,7 +253,7 @@ class GCubeProtocol{
         data[10] = x;
         data[11] = y;
         data[12] = onoff;
-    
+
         return data;
     }
 
@@ -284,7 +284,7 @@ class GCubeProtocol{
         data[15] = pictureData[5];
         data[16] = pictureData[6];
         data[17] = pictureData[7];
-    
+
         return data;
     }
 
@@ -300,7 +300,7 @@ class GCubeProtocol{
 
     static changeSpeedToSps (speed) {
         let sps = 0;
-    
+
         if (speed < 0) {
             sps = 65536 - (((Math.abs(speed) * 1100) - 10000) / Math.abs(speed));
         } else if (speed === 0) {
@@ -308,7 +308,7 @@ class GCubeProtocol{
         } else {
             sps = ((speed * 1100) - 10000) / speed;
         }
-    
+
         return sps;
     }
 
@@ -334,7 +334,7 @@ class GCubeProtocol{
                 .padStart(2, '0');
             hexStr += hex + hexSpace;
         }
-        
+
         // 공백 제거
         hexStr.trim();
         return hexStr;
@@ -351,12 +351,27 @@ class GCubeProtocol{
                 .padStart(2, '0');
             hexStr += hex + hexSpace;
         }
-        
+
         // 공백 제거
         hexStr.trim();
         return hexStr;
     }
 
+    static rebootMultiroleAggregator() {
+        var txCharSendTest = new Uint8Array(10);
+
+        txCharSendTest[0] = 0xFF;
+        txCharSendTest[1] = 0xFF;
+        txCharSendTest[2] = 0xFF;
+        txCharSendTest[3] = 0xFF;
+        txCharSendTest[4] = 0x00;
+        txCharSendTest[5] = 0x00;
+        txCharSendTest[6] = 0xA8;
+        txCharSendTest[7] = 0x00;
+        txCharSendTest[8] = 0x0A;
+        txCharSendTest[9] = 0x01;
+        return txCharSendTest;
+    }
 }
 
 module.exports = GCubeProtocol;

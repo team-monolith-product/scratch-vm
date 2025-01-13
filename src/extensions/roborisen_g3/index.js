@@ -274,6 +274,27 @@ class RoborisenGCube3Blocks {
                         },
                     },
                 },
+                {
+                    opcode: "setMatrix8",
+                    text: formatMessage({
+                        id: "roborisen.setMatrix8",
+                        default: "[CUBE] 큐브의 매트릭스 제어 - [MATRIX8]",
+                        description: "setMatrix8",
+                    }),
+                    blockType: BlockType.COMMAND,
+                    arguments: {
+                        CUBE: {
+                            type: ArgumentType.NUMBER,
+                            menu: "cube",
+                            defaultValue: this.CUBENUM[0].value,
+                        },
+                        MATRIX8: {
+                            type: ArgumentType.MATRIX8,
+                            defaultValue:
+                                "1000000001000000001000000001000000000000000000000000000000000000",
+                        },
+                    },
+                },
                 //#region carBlocks
                 {
                     opcode: "carContinuous",

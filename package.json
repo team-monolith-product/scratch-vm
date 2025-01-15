@@ -1,6 +1,6 @@
 {
   "name": "@team-monolith/scratch-vm",
-  "version": "0.4.0",
+  "version": "0.5.0",
   "description": "Modified Scratch VM for Team Monolith. It is based on 2.1.28",
   "author": "Massachusetts Institute of Technology",
   "license": "BSD-3-Clause",

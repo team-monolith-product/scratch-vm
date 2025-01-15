@@ -1,4 +1,10 @@
 ## scratch-vm
+
+이 레포지토리는 scratch-vm 을 fork하여 팀모노리스의 필요에 맞게 변경한 것입니다.
+
+package.json 의 버전을 관리하여 `npm publish` 하면 `@team-monolith`로 publish 됩니다.
+
+
 #### Scratch VM is a library for representing, running, and maintaining the state of computer programs written using [Scratch Blocks](https://github.com/scratchfoundation/scratch-blocks).
 
 [![CI/CD](https://github.com/scratchfoundation/scratch-vm/actions/workflows/ci-cd.yml/badge.svg)](https://github.com/scratchfoundation/scratch-vm/actions/workflows/ci-cd.yml)

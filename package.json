@@ -1,6 +1,6 @@
 {
-  "name": "scratch-vm",
-  "version": "4.5.354",
+  "name": "@team-monolith/scratch-vm",
+  "version": "0.6.0",
   "description": "Virtual Machine for Scratch 3.0",
   "author": "Massachusetts Institute of Technology",
   "license": "BSD-3-Clause",
